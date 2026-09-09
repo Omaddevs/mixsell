@@ -1,0 +1,150 @@
+:root {
+  --blue: #1363d2;
+  --blue-deep: #0a53c2;
+  --blue-mid: #1e6edd;
+  --blue-bright: #4394fd;
+  --green: #22c55e;
+  --green-ink: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --muted-2: #9aa3af;
+  --bg: #f3f7fd;
+  --bg-main: #f3f7fd;
+  --white: #ffffff;
+  --border: #dce6f5;
+  --surface: #ffffff;
+  --surface-2: #eef2f8;
+  --surface-hover: #e7edf7;
+  --bubble-me: #dcebff;
+  --switch-off: #d1d5db;
+  --sidebar: #1363d2;
+  --sidebar-2: #0d59c9;
+  --frame: #0a53c2;
+  --danger: #ef4444;
+  --danger-soft: #fde8e8;
+  --success-soft: #e7f8ee;
+  --warning-soft: #fff4d6;
+  --warning: #c48a00;
+  --shadow: 0 8px 30px rgba(19, 99, 210, 0.08);
+  --shadow-hover: 0 12px 32px rgba(19, 99, 210, 0.14);
+  --radius-card: 18px;
+  --radius-app: 34px;
+  --font: 'Inter', system-ui, sans-serif;
+
+  --sb-bg: #f6f7f8;
+  --sb-line: #eceef1;
+  --sb-hover: #eceef2;
+  --sb-active: #e7e8ec;
+  --sb-text: #1a1d21;
+  --sb-muted: #8d9199;
+  --sb-icon: #5c616b;
+  --sb-purple: #eee9fd;
+  --sb-purple-ink: #6b5cf6;
+}
+
+:root[data-theme='dark'] {
+  --text: #eef2f8;
+  --muted: #9aa7bd;
+  --muted-2: #6f7d97;
+  --bg: #0b1120;
+  --bg-main: #0b1120;
+  --border: #26314a;
+  --surface: #141b2c;
+  --surface-2: #1c2537;
+  --surface-hover: #212c42;
+  --bubble-me: #1d3a5f;
+  --switch-off: #313e58;
+  --danger-soft: #3a1f24;
+  --success-soft: #163625;
+  --warning-soft: #3a2f14;
+  --warning: #e0a530;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --shadow-hover: 0 12px 34px rgba(0, 0, 0, 0.55);
+
+  --sb-bg: #121a2c;
+  --sb-line: #232e46;
+  --sb-hover: #1b263c;
+  --sb-active: #202c46;
+  --sb-text: #eef2f8;
+  --sb-muted: #8b96ac;
+  --sb-icon: #9aa7bd;
+  --sb-purple: #2a2447;
+  --sb-purple-ink: #b9a8ff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+  background: var(--bg-main);
+}
+
+html {
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -1,0 +1,161 @@
+.sky-hero {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 320px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #1a2744;
+}
+
+.sky-hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  z-index: 0;
+  transition: filter 1.2s ease;
+}
+
+.sky-hero--sunrise .sky-hero-photo {
+  filter: saturate(1.12) sepia(0.22) hue-rotate(-12deg) brightness(1.04) contrast(1.04);
+}
+
+.sky-hero--day .sky-hero-photo {
+  filter: saturate(1.05) brightness(1.02);
+}
+
+.sky-hero--sunset .sky-hero-photo {
+  filter: saturate(1.18) sepia(0.32) hue-rotate(-22deg) brightness(0.88) contrast(1.08);
+}
+
+.sky-hero--night .sky-hero-photo {
+  filter: brightness(0.42) saturate(0.55) hue-rotate(16deg) contrast(1.12);
+}
+
+.sky-hero-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 1.2s ease, background 1.2s ease;
+}
+
+.sky-hero--sunrise .sky-hero-tint {
+  opacity: 0.38;
+  background: linear-gradient(180deg, #ffb26a 0%, #ffd9a3 42%, #f4c48a 100%);
+}
+
+.sky-hero--sunset .sky-hero-tint {
+  opacity: 0.48;
+  background: linear-gradient(180deg, #4a1d4a 0%, #c45a2a 48%, #f08a3a 100%);
+}
+
+.sky-hero--night .sky-hero-tint {
+  opacity: 0.72;
+  background: linear-gradient(180deg, #071226 0%, #14264a 55%, #1a2744 100%);
+  mix-blend-mode: multiply;
+}
+
+.sky-hero-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: var(--sky-stars, 0);
+  transition: opacity 1.2s ease;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 22% 28%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 36% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 48% 22%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 63% 16%, #fff, transparent),
+    radial-gradient(1px 1px at 74% 30%, #fff, transparent),
+    radial-gradient(1.6px 1.6px at 86% 14%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 24%, #fff, transparent),
+    radial-gradient(1px 1px at 14% 42%, #fff, transparent),
+    radial-gradient(1.2px 1.2px at 58% 8%, #fff, transparent);
+}
+
+.sky-hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background:
+    linear-gradient(180deg, rgba(8, 18, 36, 0.12) 0%, rgba(8, 18, 36, 0.02) 38%, rgba(8, 18, 36, 0.22) 100%);
+  pointer-events: none;
+  transition: background 1.2s ease;
+}
+
+.sky-hero--day .sky-hero-veil {
+  background: linear-gradient(180deg, rgba(8, 28, 56, 0.04) 0%, rgba(8, 18, 36, 0.14) 100%);
+}
+
+.sky-hero--sunrise .sky-hero-veil {
+  background: linear-gradient(180deg, rgba(80, 30, 20, 0.12) 0%, rgba(20, 12, 28, 0.08) 40%, rgba(20, 12, 28, 0.28) 100%);
+}
+
+.sky-hero--sunset .sky-hero-veil {
+  background: linear-gradient(180deg, rgba(40, 10, 30, 0.18) 0%, rgba(20, 8, 16, 0.08) 40%, rgba(12, 8, 20, 0.34) 100%);
+}
+
+.sky-hero--night .sky-hero-veil {
+  background: linear-gradient(180deg, rgba(4, 10, 24, 0.28) 0%, rgba(4, 10, 24, 0.12) 40%, rgba(4, 10, 24, 0.42) 100%);
+}
+
+.sky-hero-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 5;
+  transform: translateY(-58%);
+  text-align: center;
+  color: #fff;
+  pointer-events: none;
+  padding: 0 24px;
+}
+
+.sky-hero-title {
+  margin: 0;
+  font-size: clamp(34px, 4.2vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-shadow: 0 8px 28px rgba(8, 18, 36, 0.45);
+}
+
+.sky-hero-sub {
+  margin: 10px 0 0;
+  font-size: clamp(15px, 1.5vw, 20px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 4px 16px rgba(8, 18, 36, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-hero-photo,
+  .sky-hero-tint,
+  .sky-hero-veil,
+  .sky-hero-stars {
+    transition: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .sky-hero {
+    height: 220px;
+  }
+
+  .sky-hero-title {
+    font-size: 28px;
+  }
+
+  .sky-hero-sub {
+    font-size: 14px;
+  }
+}
