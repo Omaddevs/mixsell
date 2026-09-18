@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Cars from './pages/Cars'
+import AddListing from './pages/AddListing'
 import Saved from './pages/Saved'
 import Messages from './pages/Messages'
 import Notifications from './pages/Notifications'
@@ -21,6 +22,7 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/avto" element={<Cars />} />
+                <Route path="/elon-qoshish" element={<AddListing />} />
                 <Route path="/saqlangan" element={<Saved />} />
                 <Route path="/habarlar" element={<Messages />} />
                 <Route path="/notification" element={<Notifications />} />

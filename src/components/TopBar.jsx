@@ -4,7 +4,7 @@ import { Bell, Heart, MessageCircle, Moon, Phone, Sun } from 'lucide-react'
 import { messages, notifications } from '../data/dashboard'
 import { useEngagement } from '../context/EngagementContext'
 import { useTheme } from '../context/ThemeContext'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo-mini.svg'
 
 const PHONE_DISPLAY = '+998 555 888 111'
 const PHONE_HREF = 'tel:+998555888111'

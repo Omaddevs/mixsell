@@ -8,7 +8,6 @@ import newBuilding from '../assets/categories/new-building.png'
 import secondaryHome from '../assets/categories/secondary-home.png'
 import { useMapSearch } from '../context/MapSearchContext'
 import MarketJournal from './MarketJournal'
-import StoryStrip from './StoryStrip'
 
 const CATEGORIES = [
   {
@@ -117,7 +116,6 @@ export default function CategoryStrip({ activeId, onSelect }) {
           })}
         </div>
       </section>
-      <StoryStrip />
       {journalOpen ? <MarketJournal onClose={() => setJournalOpen(false)} /> : null}
     </>
   )

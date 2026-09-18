@@ -107,6 +107,10 @@ html:has(.sidebar.is-collapsed) {
   color: var(--text);
 }
 
+.sb-close {
+  display: none;
+}
+
 .sb-user:hover,
 .sb-item:hover,
 .sb-ws:hover,
@@ -653,6 +657,17 @@ html:has(.sidebar.is-collapsed) {
   margin-left: 0;
 }
 
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: rgba(15, 23, 42, 0.45);
+  -webkit-tap-highlight-color: transparent;
+}
+
 @media (max-width: 767px) {
   .app-shell,
   .app-shell--dashboard,
@@ -677,5 +692,10 @@ html:has(.sidebar.is-collapsed) {
 
   .sb-pin {
     display: none;
+  }
+
+  .sb-close {
+    display: grid;
+    place-items: center;
   }
 }

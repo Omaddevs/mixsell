@@ -34,7 +34,7 @@ import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useMobileMenu } from '../context/MobileMenuContext'
 import { messages as seedMessages } from '../data/dashboard'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo-mini.svg'
 
 const TABS = [
   { id: 'all', label: 'Barchasi' },

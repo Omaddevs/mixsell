@@ -24,6 +24,7 @@ import {
   Star,
   Trees,
   User,
+  X,
 } from 'lucide-react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { messages, notifications, sidebarPrimary } from '../data/dashboard'
@@ -31,7 +32,7 @@ import { useMapSearch } from '../context/MapSearchContext'
 import { useMobileMenu } from '../context/MobileMenuContext'
 import { useProfile } from '../context/ProfileContext'
 import { useClickOutside } from '../hooks/useClickOutside'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo-mini.svg'
 import {
   CAR_KINDS,
   HOME_KINDS,
@@ -284,6 +285,14 @@ export default function Sidebar() {
               onClick={toggleCollapsed}
             >
               {compact ? <PanelLeftOpen size={16} strokeWidth={1.7} /> : <PanelLeftClose size={16} strokeWidth={1.7} />}
+            </button>
+            <button
+              type="button"
+              className="sb-ghost sb-close"
+              aria-label="Close menu"
+              onClick={onCloseMenu}
+            >
+              <X size={18} strokeWidth={1.8} />
             </button>
           </div>
         </div>

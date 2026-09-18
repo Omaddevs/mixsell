@@ -3,8 +3,8 @@ import Modal from './Modal'
 const ARTICLES = [
   {
     date: '8 Sep 2026',
-    title: 'Nyu-Yorkda oilaviy uylar narxi barqaror qoldi',
-    body: 'Cheektowaga, Buffalo va Rochester tumanlarida 3–4 xonali uylar $150k atrofida saqlanib qolmoqda.',
+    title: 'Toshkentda oilaviy uylar narxi barqaror qoldi',
+    body: 'Chilonzor, Yunusobod va Mirzo Ulug‘bek tumanlarida 3–4 xonali uylar $150k atrofida saqlanib qolmoqda.',
   },
   {
     date: '4 Sep 2026',

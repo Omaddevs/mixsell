@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AttributionControl, Circle, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { X } from 'lucide-react'
+import { Navigation, X } from 'lucide-react'
 import MapHud from './MapHud'
-import MapPlaceMarker, { mapPreviewIds } from './MapPlaceMarker'
+import MapListingPopup from './MapListingPopup'
+import MapPlaceMarker from './MapPlaceMarker'
 
-const NY_CENTER = [42.95, -76.8]
-const DEFAULT_ZOOM = 7
+const TASHKENT_CENTER = [41.311, 69.279]
+const DEFAULT_ZOOM = 12
 
 const youIcon = L.divIcon({
   className: 'you-marker',
@@ -18,7 +19,7 @@ const youIcon = L.divIcon({
 function fitListings(map, listings) {
   const points = listings.filter((item) => Number.isFinite(item.lat) && Number.isFinite(item.lng))
   if (!points.length) {
-    map.setView(NY_CENTER, DEFAULT_ZOOM)
+    map.setView(TASHKENT_CENTER, DEFAULT_ZOOM)
     return
   }
   if (points.length === 1) {
@@ -40,9 +41,14 @@ function MapEffects({ listings, selected, userPos, flyToken, fullscreen, focusNo
   useEffect(() => {
     const timer = window.setTimeout(() => map.invalidateSize(), 80)
     const later = window.setTimeout(() => map.invalidateSize(), 280)
+    const onResize = () => map.invalidateSize()
+    window.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
     return () => {
       window.clearTimeout(timer)
       window.clearTimeout(later)
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('orientationchange', onResize)
     }
   }, [map, fullscreen])
 
@@ -77,7 +83,6 @@ export default function ListingsMap({ listings, selectedId, focusNonce = 0, onSe
   const [flyToken, setFlyToken] = useState(0)
   const [homesToken, setHomesToken] = useState(0)
   const watchId = useRef(null)
-  const previewIds = useMemo(() => mapPreviewIds(listings), [listings])
 
   const selected = useMemo(
     () => listings.find((item) => item.id === selectedId) ?? null,
@@ -104,6 +109,11 @@ export default function ListingsMap({ listings, selectedId, focusNonce = 0, onSe
         navigator.geolocation.clearWatch(watchId.current)
       }
     }
+  }, [])
+
+  useEffect(() => {
+    locateUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function applyPosition(coords) {
@@ -169,7 +179,7 @@ export default function ListingsMap({ listings, selectedId, focusNonce = 0, onSe
     <aside className={`listings-map${fullscreen ? ' is-fullscreen' : ''}`} aria-label="Map view">
       <div className="listings-map-inner">
         <MapContainer
-          center={NY_CENTER}
+          center={TASHKENT_CENTER}
           zoom={DEFAULT_ZOOM}
           scrollWheelZoom
           zoomControl={false}
@@ -177,8 +187,10 @@ export default function ListingsMap({ listings, selectedId, focusNonce = 0, onSe
           className="listings-leaflet"
         >
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            attribution="&copy; OpenStreetMap &copy; CARTO"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            subdomains="abc"
+            maxZoom={19}
+            attribution="&copy; OpenStreetMap contributors"
           />
           <AttributionControl position="bottomleft" prefix={false} />
           <MapEffects
@@ -204,7 +216,6 @@ export default function ListingsMap({ listings, selectedId, focusNonce = 0, onSe
                 key={listing.id}
                 listing={listing}
                 selected={listing.id === selectedId}
-                showThumb={previewIds.has(listing.id)}
                 onSelect={onSelect}
               />
             ) : null,
@@ -231,7 +242,24 @@ export default function ListingsMap({ listings, selectedId, focusNonce = 0, onSe
           ) : null}
         </MapContainer>
 
-        <p className="map-region-label">New York</p>
+        {selected ? <MapListingPopup listing={selected} onClose={() => onSelect(null)} /> : null}
+
+        <p className="map-region-label">Toshkent</p>
+
+        <button
+          type="button"
+          className={`map-near-btn${locating ? ' is-busy' : ''}`}
+          onClick={() => setFlyToken((value) => value + 1)}
+          disabled={!userPos}
+          title={
+            userPos
+              ? 'Joylashuvingizga yaqin e’lonlarni ko‘rsatish'
+              : 'Joylashuvga ruxsat berilgandan so‘ng ishlaydi'
+          }
+        >
+          <Navigation size={16} strokeWidth={2.2} />
+          {locating && !userPos ? 'Aniqlanmoqda...' : 'Menga yaqin'}
+        </button>
 
         {userPos ? (
           <div className="map-chip-row">

@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Circle, MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
+import { AttributionControl, Circle, MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
-import { Search, X } from 'lucide-react'
+import { Navigation, Search, X } from 'lucide-react'
 import MapFeedCard from './MapFeedCard'
 import MapHud from './MapHud'
-import MapPlaceMarker, { mapPreviewIds } from './MapPlaceMarker'
+import MapListingPopup from './MapListingPopup'
+import MapPlaceMarker from './MapPlaceMarker'
 
-const NY_CENTER = [42.95, -76.8]
+const TASHKENT_CENTER = [41.311, 69.279]
 
 const youIcon = L.divIcon({
   className: 'you-marker',
@@ -25,16 +26,21 @@ function MapController({ listings, selected, flyToken, userPos }) {
   useEffect(() => {
     const t1 = window.setTimeout(() => map.invalidateSize(), 80)
     const t2 = window.setTimeout(() => map.invalidateSize(), 280)
+    const onResize = () => map.invalidateSize()
+    window.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
     return () => {
       window.clearTimeout(t1)
       window.clearTimeout(t2)
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('orientationchange', onResize)
     }
   }, [map])
 
   useEffect(() => {
     const points = listings.filter((item) => Number.isFinite(item.lat) && Number.isFinite(item.lng))
     if (!points.length) {
-      map.setView(NY_CENTER, 7)
+      map.setView(TASHKENT_CENTER, 12)
       return
     }
     if (points.length === 1) {
@@ -82,6 +88,7 @@ export default function MapSearch({ listings, onClose }) {
   const [locating, setLocating] = useState(false)
   const [userPos, setUserPos] = useState(null)
   const [flyToken, setFlyToken] = useState(0)
+  const [geoError, setGeoError] = useState('')
   const listRef = useRef(null)
 
   const searched = useMemo(() => {
@@ -100,7 +107,6 @@ export default function MapSearch({ listings, onClose }) {
   }, [searched, bounds, inViewOnly])
 
   const selected = searched.find((item) => item.id === selectedId) ?? null
-  const previewIds = useMemo(() => mapPreviewIds(searched), [searched])
 
   useEffect(() => {
     const previous = document.body.style.overflow
@@ -122,18 +128,35 @@ export default function MapSearch({ listings, onClose }) {
   }, [selectedId])
 
   function locate() {
-    if (!navigator.geolocation) return
+    if (!navigator.geolocation) {
+      setGeoError('Bu brauzer joylashuvni aniqlashni qo‘llamaydi.')
+      return
+    }
     setLocating(true)
+    setGeoError('')
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setUserPos({ lat: position.coords.latitude, lng: position.coords.longitude })
         setFlyToken((value) => value + 1)
         setLocating(false)
+        setGeoError('')
       },
-      () => setLocating(false),
+      (error) => {
+        setLocating(false)
+        setGeoError(
+          error.code === error.PERMISSION_DENIED
+            ? 'Joylashuvdan foydalanish uchun brauzerda ruxsat bering.'
+            : 'Joylashuvni aniqlab bo‘lmadi. Qayta urinib ko‘ring.',
+        )
+      },
       { enableHighAccuracy: true, timeout: 10000 },
     )
   }
+
+  useEffect(() => {
+    locate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return createPortal(
     <div className="map-search" role="dialog" aria-modal="true" aria-labelledby="map-search-title">
@@ -182,15 +205,22 @@ export default function MapSearch({ listings, onClose }) {
         </aside>
 
         <div className="map-search-canvas">
+          <p className="map-search-float-count">{searched.length} ta e’lon</p>
           <MapContainer
-            center={NY_CENTER}
-            zoom={7}
+            center={TASHKENT_CENTER}
+            zoom={12}
             scrollWheelZoom
             zoomControl={false}
             attributionControl={false}
             className="map-search-leaflet"
           >
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              subdomains="abc"
+              maxZoom={19}
+              attribution="&copy; OpenStreetMap contributors"
+            />
+            <AttributionControl position="bottomleft" prefix={false} />
             <MapController listings={searched} selected={selected} flyToken={flyToken} userPos={userPos} />
             <BoundsWatcher onChange={setBounds} />
             <MapHud locating={locating} userPos={userPos} onLocate={locate} />
@@ -200,7 +230,6 @@ export default function MapSearch({ listings, onClose }) {
                   key={listing.id}
                   listing={listing}
                   selected={listing.id === selectedId}
-                  showThumb={previewIds.has(listing.id)}
                   onSelect={setSelectedId}
                 />
               ) : null,
@@ -216,6 +245,29 @@ export default function MapSearch({ listings, onClose }) {
               </>
             ) : null}
           </MapContainer>
+
+          <button
+            type="button"
+            className={`map-near-btn${locating ? ' is-busy' : ''}`}
+            onClick={() => setFlyToken((value) => value + 1)}
+            disabled={!userPos}
+            title={
+              userPos
+                ? 'Joylashuvingizga yaqin e’lonlarni ko‘rsatish'
+                : 'Joylashuvga ruxsat berilgandan so‘ng ishlaydi'
+            }
+          >
+            <Navigation size={16} strokeWidth={2.2} />
+            {locating && !userPos ? 'Aniqlanmoqda...' : 'Menga yaqin'}
+          </button>
+
+          {geoError ? (
+            <p className="map-toast" role="status">
+              {geoError}
+            </p>
+          ) : null}
+
+          {selected ? <MapListingPopup listing={selected} onClose={() => setSelectedId(null)} /> : null}
         </div>
       </div>
     </div>,

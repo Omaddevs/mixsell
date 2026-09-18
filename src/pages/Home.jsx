@@ -7,6 +7,7 @@ import { FilterGroup, FilterOption } from '../components/FiltersButton'
 import Layout from '../components/Layout'
 import ListingsMap from '../components/ListingsMap'
 import ListingsToolbar from '../components/ListingsToolbar'
+import JournalSection from '../components/JournalSection'
 import MapSearch from '../components/MapSearch'
 import MarketFilters, { PROPERTY_TYPES } from '../components/MarketFilters'
 import MortgageCalculator from '../components/MortgageCalculator'
@@ -310,7 +311,7 @@ export default function Home() {
       <main className="listings-page">
         <ListingsToolbar
           resultCount={visible.length + visibleRegular.length}
-          locationLabel="New York, US"
+          locationLabel="Toshkent, O‘zbekiston"
           query={query}
           onQueryChange={setQuery}
           sort={sort}
@@ -466,6 +467,8 @@ export default function Home() {
             )}
           </section>
         )}
+
+        <JournalSection />
 
         {modal === 'calculator' ? <MortgageCalculator onClose={() => setModal(null)} /> : null}
         {mapSearchOpen ? (

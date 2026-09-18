@@ -171,25 +171,23 @@ export default function PostActions({ listing, compact = false }) {
         </button>
         <button
           type="button"
-          className="post-action"
-          aria-label="Izohlar"
+          className="post-action post-action--icon"
+          aria-label={`Izohlar${comments.length ? `, ${comments.length} ta` : ''}`}
           onClick={(event) => {
             stop(event)
             setOpen(true)
           }}
         >
           <MessageCircle size={compact ? 18 : 22} strokeWidth={1.8} />
-          <span>{formatCount(comments.length)}</span>
         </button>
         <button
           type="button"
-          className={`post-action${shared ? ' is-shared' : ''}`}
-          aria-label="Ulashish"
+          className={`post-action post-action--icon${shared ? ' is-shared' : ''}`}
+          aria-label={`Ulashish${shares ? `, ${shares} marta ulashilgan` : ''}`}
           title={shared ? 'Ulashildi' : 'Ulashish'}
           onClick={share}
         >
           <Send size={compact ? 18 : 22} strokeWidth={1.8} />
-          <span>{formatCount(shares)}</span>
         </button>
         <p className="post-views" title="Ko‘rishlar">
           <Eye size={compact ? 15 : 16} strokeWidth={1.8} />
