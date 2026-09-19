@@ -34,7 +34,7 @@ export default function TopBar() {
           aria-label={isDark ? "Yorug' rejim" : "Tungi rejim"}
           onClick={toggleTheme}
         >
-          {isDark ? <Sun size={17} strokeWidth={1.9} /> : <Moon size={17} strokeWidth={1.9} />}
+          {isDark ? <Sun size={16} strokeWidth={1.9} /> : <Moon size={16} strokeWidth={1.9} />}
         </button>
 
         <button
@@ -43,7 +43,7 @@ export default function TopBar() {
           aria-label="Habarlar"
           onClick={() => navigate('/habarlar')}
         >
-          <MessageCircle size={17} strokeWidth={1.9} />
+          <MessageCircle size={16} strokeWidth={1.9} />
           {unreadMessages ? <span className="topbar-dot" /> : null}
         </button>
 
@@ -53,7 +53,7 @@ export default function TopBar() {
           aria-label="Saqlangan e’lonlar"
           onClick={() => navigate('/saqlangan')}
         >
-          <Heart size={17} strokeWidth={1.9} />
+          <Heart size={16} strokeWidth={1.9} />
           {savedIds.length ? <span className="topbar-count">{savedIds.length}</span> : null}
         </button>
 
@@ -63,7 +63,7 @@ export default function TopBar() {
           aria-label="Bildirishnomalar"
           onClick={() => navigate('/notification')}
         >
-          <Bell size={17} strokeWidth={1.9} />
+          <Bell size={16} strokeWidth={1.9} />
           <span className="topbar-count topbar-count--green">{unreadNotifications}</span>
         </button>
 
